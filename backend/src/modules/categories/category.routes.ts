@@ -1,19 +1,40 @@
-import { Router } from 'express';
+import { Router } from "express";
+import * as categoryController from "./category.controller";
+import { validate } from "../../common/middleware/validate";
+import {
+  createCategorySchema,
+  updateCategorySchema,
+  idParamSchema,
+} from "../../common/validators";
 
 const router = Router();
 
-// TODO: Implement category CRUD endpoints
-// POST   /api/categories      - Create category
-// GET    /api/categories      - List categories
-// GET    /api/categories/:id  - Get category by ID
-// PUT    /api/categories/:id  - Update category
-// DELETE /api/categories/:id  - Delete category
+// POST /api/categories - Create category
+router.post(
+  "/",
+  validate(createCategorySchema),
+  categoryController.createCategory,
+);
 
-router.get('/', (_req, res) => {
-  res.json({
-    success: true,
-    message: 'Categories module - not yet implemented',
-  });
-});
+// GET /api/categories - List categories
+router.get("/", categoryController.getCategories);
+
+// GET /api/categories/:id - Get category by ID
+router.get("/:id", validate(idParamSchema), categoryController.getCategoryById);
+
+// PUT /api/categories/:id - Update category
+router.put(
+  "/:id",
+  validate(idParamSchema),
+  validate(updateCategorySchema),
+  categoryController.updateCategory,
+);
+
+// DELETE /api/categories/:id - Delete category
+router.delete(
+  "/:id",
+  validate(idParamSchema),
+  categoryController.deleteCategory,
+);
 
 export default router;

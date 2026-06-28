@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("bulk_upload_jobs", {
+    await queryInterface.createTable("report_jobs", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -14,52 +14,28 @@ module.exports = {
       },
 
       status: {
-        type: Sequelize.ENUM(
-          "pending",
-          "processing",
-          "completed",
-          "failed",
-          "completed_with_errors",
-        ),
+        type: Sequelize.ENUM("pending", "processing", "completed", "failed"),
         defaultValue: "pending",
         allowNull: false,
       },
 
-      file_name: {
+      report_type: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      file_format: {
+        type: Sequelize.ENUM("csv", "xlsx"),
+        allowNull: false,
+      },
+
+      file_path: {
         type: Sequelize.STRING,
         allowNull: true,
       },
 
-      total_rows: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-
-      processed_rows: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-      },
-
-      success_rows: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-      },
-
-      failed_rows: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-      },
-
-      error_file_path: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-
-      error_details: {
-        type: Sequelize.TEXT,
+      filters: {
+        type: Sequelize.JSONB,
         allowNull: true,
       },
 
@@ -93,21 +69,25 @@ module.exports = {
 
     // Create indexes
 
-    await queryInterface.addIndex("bulk_upload_jobs", ["status"], {
-      name: "bulk_upload_jobs_status_index",
+    await queryInterface.addIndex("report_jobs", ["status"], {
+      name: "report_jobs_status_index",
     });
 
-    await queryInterface.addIndex("bulk_upload_jobs", ["created_by"], {
-      name: "bulk_upload_jobs_created_by_index",
+    await queryInterface.addIndex("report_jobs", ["created_by"], {
+      name: "report_jobs_created_by_index",
     });
 
-    await queryInterface.addIndex("bulk_upload_jobs", ["unique_id"], {
-      name: "bulk_upload_jobs_unique_id_index",
+    await queryInterface.addIndex("report_jobs", ["report_type"], {
+      name: "report_jobs_report_type_index",
+    });
+
+    await queryInterface.addIndex("report_jobs", ["unique_id"], {
+      name: "report_jobs_unique_id_index",
       unique: true,
     });
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable("bulk_upload_jobs");
+    await queryInterface.dropTable("report_jobs");
   },
 };

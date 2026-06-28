@@ -1,7 +1,8 @@
 import User from './User';
 import Category from './Category';
 import Product from './Product';
-import BulkJob from './BulkJob';
+import BulkUploadJob from './BulkUploadJob';
+import ReportJob from './ReportJob';
 
 // Set up associations
 Category.hasMany(Product, {
@@ -14,4 +15,20 @@ Product.belongsTo(Category, {
   as: 'category',
 });
 
-export { User, Category, Product, BulkJob };
+BulkUploadJob.belongsTo(User, {
+  foreignKey: 'createdBy',
+  as: 'creator',
+});
+
+ReportJob.belongsTo(User, {
+  foreignKey: 'createdBy',
+  as: 'creator',
+});
+
+export {
+  User,
+  Category,
+  Product,
+  BulkUploadJob,
+  ReportJob,
+};

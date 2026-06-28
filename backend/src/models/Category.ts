@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../database/sequelize';
+import { Model, DataTypes } from "sequelize";
+import sequelize from "../database/sequelize";
 
 class Category extends Model {
   declare id: string;
@@ -21,7 +21,7 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      field: 'unique_id',
+      field: "unique_id",
     },
 
     name: {
@@ -32,20 +32,28 @@ Category.init(
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: 'created_at',
+      field: "created_at",
     },
 
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: 'updated_at',
+      field: "updated_at",
     },
   },
   {
     sequelize,
-    tableName: 'categories',
+    tableName: "categories",
     timestamps: true,
-  }
+    indexes: [
+      { fields: ["name"], name: "categories_name_index" },
+      {
+        fields: ["unique_id"],
+        name: "categories_unique_id_index",
+        unique: true,
+      },
+    ],
+  },
 );
 
 export default Category;

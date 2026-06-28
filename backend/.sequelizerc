@@ -1,5 +1,5 @@
 module.exports = {
-  'config': './src/database/sequelize.ts',
+  'config': './config/database.js',
   'models-path': './src/models',
   'migrations-path': './migrations',
   'seeders-path': './seeders',

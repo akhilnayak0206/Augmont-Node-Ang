@@ -30,6 +30,16 @@ module.exports = {
         allowNull: false,
       },
     });
+
+    // Create indexes
+    await queryInterface.addIndex('categories', ['name'], {
+      name: 'categories_name_index',
+    });
+
+    await queryInterface.addIndex('categories', ['unique_id'], {
+      name: 'categories_unique_id_index',
+      unique: true,
+    });
   },
 
   down: async (queryInterface) => {

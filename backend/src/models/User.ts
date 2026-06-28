@@ -3,8 +3,10 @@ import sequelize from '../database/sequelize';
 
 class User extends Model {
   declare id: string;
+  declare uniqueId: string;
+  declare name: string;
   declare email: string;
-  declare password: string;
+  declare passwordHash: string;
   declare createdAt: Date;
   declare updatedAt: Date;
 }
@@ -17,15 +19,28 @@ User.init(
       primaryKey: true,
     },
 
+    uniqueId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      field: 'unique_id',
+    },
+
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
 
-    password: {
+    passwordHash: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: 'password_hash',
     },
 
     createdAt: {
@@ -44,6 +59,13 @@ User.init(
     sequelize,
     tableName: 'users',
     timestamps: true,
+    indexes: [
+      {
+        fields: ['email'],
+        name: 'users_email_index',
+        unique: true,
+      },
+    ],
   }
 );
 

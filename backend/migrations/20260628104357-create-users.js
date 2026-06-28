@@ -7,13 +7,24 @@ module.exports = {
         primaryKey: true,
       },
 
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      unique_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+
       email: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
 
-      password: {
+      password_hash: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -29,6 +40,12 @@ module.exports = {
         defaultValue: Sequelize.NOW,
         allowNull: false,
       },
+    });
+
+    // Create indexes
+    await queryInterface.addIndex('users', ['email'], {
+      name: 'users_email_index',
+      unique: true,
     });
   },
 

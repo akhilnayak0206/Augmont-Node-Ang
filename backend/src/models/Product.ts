@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../database/sequelize';
+import { Model, DataTypes } from "sequelize";
+import sequelize from "../database/sequelize";
 
 class Product extends Model {
   declare id: string;
@@ -24,7 +24,7 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      field: 'unique_id',
+      field: "unique_id",
     },
 
     name: {
@@ -45,31 +45,45 @@ Product.init(
     categoryId: {
       type: DataTypes.UUID,
       allowNull: false,
-      field: 'category_id',
+      field: "category_id",
     },
 
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: 'created_at',
+      field: "created_at",
     },
 
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
-      field: 'updated_at',
+      field: "updated_at",
     },
   },
   {
     sequelize,
-    tableName: 'products',
+    tableName: "products",
     timestamps: true,
     indexes: [
-      { fields: ['category_id'] },
-      { fields: ['price'] },
-      { fields: ['name'] },
+      {
+        fields: ["category_id"],
+        name: "products_category_id_index",
+      },
+      {
+        fields: ["price"],
+        name: "products_price_index",
+      },
+      {
+        fields: ["name"],
+        name: "products_name_index",
+      },
+      {
+        fields: ["unique_id"],
+        name: "products_unique_id_index",
+        unique: true,
+      },
     ],
-  }
+  },
 );
 
 export default Product;

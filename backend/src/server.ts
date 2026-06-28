@@ -4,7 +4,7 @@ import sequelize from './database/sequelize';
 import { startBoss } from './jobs';
 import {
   registerBulkUploadProcessor as registerBulkUpload,
-} from './jobs/processors/bulkUpload.processor';
+} from './jobs/processors/bulk-upload';
 import {
   registerReportProcessor as registerReport,
 } from './jobs/processors/report.processor';

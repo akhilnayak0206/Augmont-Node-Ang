@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('products', {
+    await queryInterface.createTable("products", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -32,10 +32,10 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'categories',
-          key: 'id',
+          model: "categories",
+          key: "id",
         },
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
       },
 
       created_at: {
@@ -52,12 +52,26 @@ module.exports = {
     });
 
     // Create indexes
-    await queryInterface.addIndex('products', ['category_id']);
-    await queryInterface.addIndex('products', ['price']);
-    await queryInterface.addIndex('products', ['name']);
+    // Create indexes
+    await queryInterface.addIndex("products", ["category_id"], {
+      name: "products_category_id_index",
+    });
+
+    await queryInterface.addIndex("products", ["price"], {
+      name: "products_price_index",
+    });
+
+    await queryInterface.addIndex("products", ["name"], {
+      name: "products_name_index",
+    });
+
+    await queryInterface.addIndex("products", ["unique_id"], {
+      name: "products_unique_id_index",
+      unique: true,
+    });
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('products');
+    await queryInterface.dropTable("products");
   },
 };

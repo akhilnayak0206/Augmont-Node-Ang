@@ -1,17 +1,32 @@
 import { Router } from 'express';
+import * as reportController from './report.controller';
+import { validate } from '../../common/middleware/validate';
+import {
+  createReportJobSchema,
+  jobIdParamSchema,
+} from '../../common/validators';
 
 const router = Router();
 
-// TODO: Implement report generation endpoints
-// POST /api/reports/products     - Trigger product report generation
-// GET  /api/reports/status/:id   - Check report generation status
-// GET  /api/reports/download/:id - Download generated report
+// POST /api/reports/product - create product report
+router.post(
+  '/products',
+  validate(createReportJobSchema),
+  reportController.createProductReport
+);
 
-router.get('/', (_req, res) => {
-  res.json({
-    success: true,
-    message: 'Reports module - not yet implemented',
-  });
-});
+// GET /api/reports/:jobId/status - Check job status
+router.get(
+  '/:jobId/status',
+  validate(jobIdParamSchema),
+  reportController.getReportStatus
+);
+
+// GET /api/reports/:jobId/download - Download completed report
+router.get(
+  '/:jobId/download',
+  validate(jobIdParamSchema),
+  reportController.downloadReport
+);
 
 export default router;
